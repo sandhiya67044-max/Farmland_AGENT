@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: agritech
+    env: docker
+    region: oregon
+    plan: free
+    dockerfilePath: ./Dockerfile
+    port: 5000
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: PORT
+        value: "5000"
+    autoDeploy: true
+    healthCheckPath: /healthz
+    buildCommand: python -m pip install -r requirements.txt
+    startCommand: gunicorn run:app -b 0.0.0.0:5000 --workers 1 --threads 4 --timeout 120
